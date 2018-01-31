@@ -28,47 +28,43 @@
 </head>
 
 <body>
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <img src="http://via.placeholder.com/250x150">
+      </div>
 
-
-
-        <div class="wrapper">
-            <!-- Sidebar Holder -->
-            <nav id="sidebar">
-                <div class="sidebar-header">
-                    <img src="http://via.placeholder.com/250x150">
-                </div>
-
-                <ul class="list-unstyled components">
-                    <p>Adminpanel</p>
-                    <li class="active">
-                        <a href="#">Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Orders</a>
-                        <ul class="list-dropdown collapse list-unstyled" id="homeSubmenu">
-                            <li><a href="#">Nieuw</a></li>
-                            <li><a href="#">Open</a></li>
-                            <li><a href="#">Afgesloten</a></li>
-                        </ul>
-                    </li>
-                    <!-- <li>
-                        <a href="#">About</a>
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
-                        <ul class="collapse list-unstyled" id="pageSubmenu">
-                            <li><a href="#">Page 1</a></li>
-                            <li><a href="#">Page 2</a></li>
-                            <li><a href="#">Page 3</a></li>
-                        </ul>
-                    </li> -->
-                    <li>
-                        <a href="#">Contact Form</a>
-                    </li>
-                    <li>
-                        <a href="#">Gebruikers</a>
-                    </li>
-                </ul>
-            </nav>
-
+      <ul class="list-unstyled components">
+        <p>Adminpanel</p>
+        <li class="active">
+            <a href="#">Dashboard</a>
+        </li>
+        <li>
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Orders</a>
+            <ul class="list-dropdown collapse list-unstyled" id="homeSubmenu">
+                <li><a href="#">Nieuw</a></li>
+                <li><a href="#">Open</a></li>
+                <li><a href="#">Afgesloten</a></li>
+            </ul>
+        </li>
+        <!-- <li>
+            <a href="#">About</a>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                <li><a href="#">Page 1</a></li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+        </li> -->
+        <li>
+            <a href="#">Contact Form</a>
+        </li>
+        <li>
+            <a href="#">Gebruikers</a>
+        </li>
+      </ul>
+    </nav>
             <!-- Page Content Holder -->
             <div id="content">
               <nav class="navbar navbar-default">
