@@ -52,12 +52,12 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
-    <ul class="navbar-nav ml-auto">
-      <li class="navbar-item">
-        <a id="navRep" class="nav-link">Reparatie Aanmelden</a>
-      </li>
-    </ul>
   </button>
+  <ul class="navbar-nav ml-auto">
+    <li class="navbar-item">
+      <a id="navRep" class="navRep2 nav-link">Reparatie Aanmelden</a>
+    </li>
+  </ul>
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
     <a class="navbar-brand" href="#">Hidden brand</a>
     <ul class="navbar-nav ml-auto">
@@ -71,7 +71,7 @@
         <a class="nav-link">Contact</a>
       </li>
       <li class="navbar-item">
-        <a id="navRep" class="nav-link">Reparatie Aanmelden</a>
+        <a id="navRep" class="navRep1 nav-link">Reparatie Aanmelden</a>
       </li>
     </ul>
   </div>

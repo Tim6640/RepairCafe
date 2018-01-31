@@ -1,0 +1,23 @@
+#navRep {
+  padding: 10px 25px;
+  background-color: #ff4212;
+  border-radius: 50px;
+  color: white;
+}
+
+.navbar{
+  height: 100px;
+}
+
+.navRep2{
+  display: none;
+
+
+@media (max-width: 992px) {
+  .navRep1{
+    display: none;
+  }
+  .navRep2{
+    display: inherit;
+  }
+}
