@@ -25,9 +25,20 @@
   <!-- Scrollbar Custom CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 
+  <?php
+  session_start();
+  // php include
+  include ("includes/function.php");
+  ?>
+
 </head>
 
 <body>
+<?php
+  if (!isset($_SESSION["login"]["Succesful"])) {
+    login();
+  }
+?>
         <div class="wrapper">
             <!-- Sidebar Holder -->
             <nav id="sidebar">
