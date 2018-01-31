@@ -28,9 +28,6 @@
 </head>
 
 <body>
-
-
-
         <div class="wrapper">
             <!-- Sidebar Holder -->
             <nav id="sidebar">
@@ -51,21 +48,12 @@
                             <li><a href="#">Afgesloten</a></li>
                         </ul>
                     </li>
-                    <!-- <li>
-                        <a href="#">About</a>
-                        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
-                        <ul class="collapse list-unstyled" id="pageSubmenu">
-                            <li><a href="#">Page 1</a></li>
-                            <li><a href="#">Page 2</a></li>
-                            <li><a href="#">Page 3</a></li>
-                        </ul>
-                    </li> -->
-                    <li>
-                        <a href="#">Contact Form</a>
-                    </li>
-                    <li>
-                        <a href="#">Gebruikers</a>
-                    </li>
+<!--                    <li>-->
+<!--                        <a href="#">Contact Form</a>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="#">Gebruikers</a>-->
+<!--                    </li>-->
                 </ul>
             </nav>
 
@@ -111,11 +99,6 @@
                               <td>Robin Baljeu</td>
                               <td>Smith</td>
                               <td>50</td>
-                            </tr>
-                            <tr>
-                              <td>Eve</td>
-                              <td>Jackson</td>
-                              <td>94</td>
                             </tr>
                           </tbody>
                         </table>
