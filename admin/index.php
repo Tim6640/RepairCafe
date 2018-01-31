@@ -1,3 +1,6 @@
+<?php
+include_once "includes/connection.php";
+?>
 <!-- Start HTML -->
 <!DOCTYPE html>
 <html lang="nl">
@@ -80,58 +83,63 @@
               <div id="mainContent">
                 <div class="container-fluid">
                   <div class="row">
-
                     <div class="col-lg-8">
-                      <div class="container-fluid shadow-box">
-                        <div class="title-box blue">
-                          <p>Orders</p>
-                        </div>
-                        <table class="table">
-                          <thead>
-                            <tr>
-                              <th>Name:</th>
-                              <th>Lastname</th>
-                              <th>Age</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Robin Baljeu</td>
-                              <td>Smith</td>
-                              <td>50</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <?php if (!isset($_GET['order'])) {
+                            echo "
+                              <div class=\"container-fluid shadow-box\">
+                                <div class=\"title-box blue\">
+                                  <p>Orders</p>
+                                </div>
+                                <table class=\"table\">
+                                  <thead>
+                                    <tr>
+                                      <th>Klant naam:</th>
+                                      <th>Product</th>
+                                      <th>Status</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                          ";
+                            $orders = $db->query('SELECT * FROM  repair_order INNER JOIN customer ON repair_order.customer_id=customer.customer_id INNER JOIN product ON repair_order.product_id=product.product_id');
+                            foreach ($orders as $order) {
+                                echo "<tr>
+                                          <td>" . $order['customer_name'] . "</td>
+                                          <td>" . $order['product_name'] . "</td>
+                                          <td>" . $order['status'] . "</td>
+                                          <td>
+                                          <a href=\"index.php?order=" . $order['order_id'] . "\">
+                                              <span class=\"glyphicon glyphicon-play\"></span>
+                                          </a>
+                                          </td>
+                                      </tr>
+                                   </tbody>
+                                </table>
+                                </div>
+                                </div>
+                                  <div class=\"col-lg-4\">
+                                      <div class=\"container-fluid shadow-box\">
+                                        <div class=\"title-box red\">
+                                          <p>Activiteiten</p>
+                                        </div>
+                                        Hier komen de gebruikers
+                                      </div>
+                                    </div>";
+                            }
+                        }
+                        elseif (isset($_GET['order'])){
+                            $selectedOrder = $_GET['order'];
+                            $currentOrder = $db->query('SELECT * FROM repair_order WHERE order_id = '.$selectedOrder.'');
+                            foreach ($currentOrder as $order){
+                                echo "";
+                            }
+                        }
+                        ?>
                       </div>
                     </div>
-
-                    <div class="col-lg-4">
-                      <div class="container-fluid shadow-box">
-                        <div class="title-box red">
-                          <p>Activiteiten</p>
-                        </div>
-                        Hier komen de gebruikers
-                      </div>
-                    </div>
-
-                    <div class="col-lg-8">
-                      <div class="container-fluid shadow-box">
-                        <div class="title-box blue">
-                          <p>Orders</p>
-                        </div>
-                        Hier Komen de orders
-                      </div>
-                    </div>
-
                   </div>
                 </div>
               </div>
             </div>
-        </div>
-
-
-
-
 
         <!-- jQuery CDN -->
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
