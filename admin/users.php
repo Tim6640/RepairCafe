@@ -93,74 +93,32 @@
         <div class="container-fluid">
           <div class="row">
 
-              <?php
-              if (!isset($_GET['order'])) {
-                echo '
-                <div class="col-lg-8">
-                  <div class="container-fluid shadow-box">
-                    <div class="title-box blue">
-                      <p>Orders</p>
-                    </div>
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th>Klant naam:</th>
-                          <th>Product</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      ';
-                      $orders = getOrders();
-                      foreach ($orders as $order) {
-                      echo '
-                        <tr>
-                          <td>' . $order['customer_name'] . '</td>
-                          <td>' . $order['product_name'] . '</td>
-                          <td>' . $order['status'] . '</td>
-                          <td>
-                            <a href="index.php?order=' . $order['order_id'] . '">
-                              <span class="glyphicon glyphicon-play"></span>
-                            </a>
-                          </td>
-                        </tr>
-                      ';
-                      }
-                      echo '
-                      </tbody>
-                    </table>
-                  </div>
+            <div class="col-lg-12">
+              <div class="container-fluid shadow-box">
+                <div class="title-box teal">
+                  <p>Medewerkers</p>
                 </div>
-                <div class="col-lg-4">
-                  <div class="container-fluid shadow-box">
-                    <div class="title-box red">
-                      <p>Activiteiten</p>
-                    </div>
-                    Hier komen de gebruikers
-                  </div>
-                </div>
-                ';
-              }
-              elseif (isset($_GET['order'])) {
-                echo '
-                  <div class="col-lg-12">
-                    <div class="container-fluid shadow-box">
-                      <div class="title-box blue">
-                        <p>Orders</p>
-                      </div>
-                      ';
-                      $currentOrder = getOrderInfo($_GET['order']);
-                      foreach ($currentOrder as $order){
-                        echo '
-                          Hier komt de informatie over de reparatie
-                        ';
-                      }
-                    echo '
-                    </div>
-                  </div>
-                ';
-              }
-              ?>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Naam:</th>
+                      <th>E-mailadres:</th>
+                      <th>Admin:</th>
+                      <th>Mogelijkheden:</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Robin Baljeu</td>
+                      <td>Rcbaljeu@gmail.com</td>
+                      <td><i class="fas fa-check correct"></i></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
 
           </div>
         </div>
