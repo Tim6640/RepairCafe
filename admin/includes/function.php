@@ -5,7 +5,6 @@
  * Date: 31-1-2018
  * Time: 09:02
  */
-
 function logIn(){
   $message = "";
   $login = '
@@ -96,3 +95,4 @@ function logIn(){
     exit;
   }
 }
+
