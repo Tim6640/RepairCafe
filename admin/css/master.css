@@ -57,6 +57,14 @@ a, a:hover, a:focus {
   margin-bottom: 15px;
 }
 
+.teal {
+  background-color: #009688;
+}
+
+.correct {
+  color: #8bc34a;
+}
+
 #login-content {
   position:fixed;
   top: 50%;

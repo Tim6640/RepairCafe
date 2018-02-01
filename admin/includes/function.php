@@ -87,7 +87,7 @@ function logIn(){
       else{
         $password = htmlspecialchars($_POST["loginPassword"]);
         $hashedPass = hash("sha256", $password);
-        $query = "SELECT * FROM login WHERE email = :email AND password = :password";
+        $query = "SELECT * FROM employee WHERE `e-mail` = :email AND password = :password";
         $statement = $db->prepare($query);
         $statement->execute(
           array(
@@ -99,11 +99,11 @@ function logIn(){
         if($count > 0)
         {
           $result = $statement->fetchALL();
-          $_SESSION["login"]["email"]       =   $result[0]["email"];
-          $_SESSION["login"]["name"]        =   $result[0]["name"];
+          $_SESSION["login"]["email"]       =   $result[0]["e-mail"];
+          $_SESSION["login"]["name"]        =   $result[0]["employee_name"];
           $_SESSION["login"]["Succesful"]   =   true;
-          $_SESSION["login"]["power"]       =   $result[0]["rechten"];
-          $_SESSION["login"]["userID"]      =   $result[0]["userID"];
+          $_SESSION["login"]["power"]       =   $result[0]["power"];
+          $_SESSION["login"]["userID"]      =   $result[0]["employee_id"];
         }
         else
         {
