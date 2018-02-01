@@ -5,6 +5,39 @@
  * Date: 31-1-2018
  * Time: 09:02
  */
+
+// Get orders voor het dashboard
+function getOrders(){
+
+  include ("includes/connection.php");
+
+  $sql = "SELECT * FROM  repair_order INNER JOIN customer ON repair_order.customer_id=customer.customer_id INNER JOIN product ON repair_order.product_id=product.product_id";
+
+  $stmt = $db->prepare($sql);
+  $stmt->execute();
+
+  $result = $stmt->fetchALL();
+  return $result;
+
+}
+
+// Get the order that has been selected
+function getOrderInfo($order_id) {
+
+  include ("includes/connection.php");
+
+  $sql = "SELECT * FROM repair_order WHERE order_id = :order_id";
+
+  $stmt = $db->prepare($sql);
+  $stmt->execute(array(
+    ':order_id' => $order_id
+  ));
+
+  $result = $stmt->fetchALL();
+  return $result;
+}
+
+// Login Function
 function logIn(){
   $message = "";
   $login = '
@@ -95,4 +128,3 @@ function logIn(){
     exit;
   }
 }
-
