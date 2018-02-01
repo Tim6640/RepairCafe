@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2018 at 12:00 PM
+-- Generation Time: Feb 01, 2018 at 09:01 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -34,7 +34,29 @@ CREATE TABLE `customer` (
   `e-mail` varchar(255) NOT NULL,
   `tel` int(11) NOT NULL,
   `zipcode` varchar(16) NOT NULL,
-  `address` text NOT NULL
+  `address` text NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`customer_id`, `customer_name`, `e-mail`, `tel`, `zipcode`, `address`, `password`) VALUES
+(1, 'Test', 'Test', 634234234, '8263kd', 'Test', 'test');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee`
+--
+
+CREATE TABLE `employee` (
+  `employee_id` int(11) NOT NULL,
+  `employee_name` text NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `e-mail` text NOT NULL,
+  `power` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -51,6 +73,13 @@ CREATE TABLE `product` (
   `issue` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`product_id`, `product_name`, `product_state`, `serie_number`, `issue`) VALUES
+(1, 'Test', 1, 1231, 'Test');
+
 -- --------------------------------------------------------
 
 --
@@ -63,8 +92,16 @@ CREATE TABLE `repair_order` (
   `product_id` int(11) NOT NULL,
   `status` varchar(64) NOT NULL,
   `costs` int(11) NOT NULL,
-  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `category` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `repair_order`
+--
+
+INSERT INTO `repair_order` (`order_id`, `customer_id`, `product_id`, `status`, `costs`, `time_stamp`, `category`) VALUES
+(2, 1, 1, 'Test', 123, '2018-01-31 09:12:55', '');
 
 --
 -- Indexes for dumped tables
@@ -75,6 +112,12 @@ CREATE TABLE `repair_order` (
 --
 ALTER TABLE `customer`
   ADD PRIMARY KEY (`customer_id`);
+
+--
+-- Indexes for table `employee`
+--
+ALTER TABLE `employee`
+  ADD PRIMARY KEY (`employee_id`);
 
 --
 -- Indexes for table `product`
@@ -98,19 +141,25 @@ ALTER TABLE `repair_order`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `employee`
+--
+ALTER TABLE `employee`
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `repair_order`
 --
 ALTER TABLE `repair_order`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
