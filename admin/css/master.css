@@ -65,6 +65,33 @@ a, a:hover, a:focus {
   color: #8bc34a;
 }
 
+.yellow {
+  background-color: #ffc107;
+}
+
+.addUser {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 35px;
+}
+
+#userTable tr th:last-child {
+  width: 150px;
+  text-align: center;
+}
+#userTable tr th:nth-last-child(2) {
+  width: 150px;
+  text-align: center;
+}
+#userTable tr td:nth-last-child(2) {
+  text-align: center;
+}
+#userTable tr td:last-child {
+  text-align: center;
+}
+
+
 #login-content {
   position:fixed;
   top: 50%;
