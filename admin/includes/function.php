@@ -26,7 +26,7 @@ function getOrderInfo($order_id) {
 
   include ("includes/connection.php");
 
-  $sql = "SELECT * FROM repair_order WHERE order_id = :order_id";
+  $sql = "SELECT * FROM repair_order INNER JOIN customer ON repair_order.customer_id=customer.customer_id WHERE order_id = :order_id";
 
   $stmt = $db->prepare($sql);
   $stmt->execute(array(
@@ -35,6 +35,21 @@ function getOrderInfo($order_id) {
 
   $result = $stmt->fetchALL();
   return $result;
+}
+
+function getProductInfo($product_id) {
+
+    include ("includes/connection.php");
+
+    $sql = "SELECT * FROM product WHERE product_id = :product_id";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute(array(
+        ':product_id' => $product_id
+    ));
+
+    $result = $stmt->fetchALL();
+    return $result;
 }
 
 // Login Function
