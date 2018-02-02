@@ -85,6 +85,10 @@ function getProductInfo($product_id) {
     return $result;
 }
 
+function updateMaterial(){
+
+}
+
 // Login Function
 function logIn(){
   $message = "";

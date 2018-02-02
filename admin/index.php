@@ -173,32 +173,50 @@
                       <div class="title-box blue">
                         <p>Order info</p>
                       </div>
-                      <p1>Order status: </p1>
-                      <select title="Order status">
-                        <option value="open">Open</option>
-                        <option value="inprogress">In progress</option>
-                        <option value="done">Done</option>
-                      </select>
-                      <form name="material" method="post">
-                          <table title="Materiaal gebruikt" class="table inputInfo">
-                            <thead>
-                                <tr>
-                                    <td>Materiaal</td>
-                                    <td>Hoeveelheid</td>
-                                    <td>Prijs per stuk</td>
-                                </tr>
-                                <tr>
-                                    <td><input class="inputInfo" type="text"></td>
-                                    <td><input class="inputInfo" type="number"></td>
-                                    <td><input class="inputInfo" type="number"></td>
-                                </tr>
-                            </thead>
-                          </table>
-                      </form>
-                      <select title="Assigned to">
-                        <option value="open">Open</option>
-                      </select>
-                  </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <p1>Order status: </p1>
+                          <select title="Order status">
+                            <option value="open">Open</option>
+                            <option value="inprogress">In progress</option>
+                            <option value="done">Done</option>
+                          </select>
+                          <form name="material" method="post">
+                              <table title="Materiaal gebruikt" class="table inputInfo">
+                                <thead>
+                                    <tr>
+                                        <td>Materiaal</td>
+                                        <td>Hoeveelheid</td>
+                                        <td>Prijs per stuk</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input class="inputInfo" type="text"></td>
+                                        <td><input class="inputInfo" type="number"></td>
+                                        <td><input class="inputInfo" type="number"></td>
+                                    </tr>
+                                </thead>
+                              </table>
+                          </form>
+                          <p1>Taak toewijzen aan: </p1>
+                          <select title="Assigned to">
+                          <option value="none">Open</option>
+                          ';
+                            $users = getUsers();
+                            foreach($users as $user){
+                                echo'
+                                <option value="open">'. $user["employee_name"] .'</option>
+                                ';
+                            }
+                            echo '
+                          </select>
+                          <p1><br>Eventueel extra informatie: </p1>
+                          <textarea style=" width: 100% "></textarea>
+                         </div>
+                         <div class="col-lg-12">
+                          <button class="btn btn-danger"><i class="fas fa-times"></i> Cancel</button> <button class="btn btn-success"><i class="fas fa-check"></i> Confirm</button>
+                         </div>
+                     </div>
+                 </div>
                 ';
               }
               ?>
