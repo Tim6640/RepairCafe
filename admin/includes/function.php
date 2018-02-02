@@ -6,7 +6,7 @@
  * Time: 09:02
  */
 
-// Get orders voor het dashboard
+// Get orders for het dashboard
 function getOrders(){
 
   include ("includes/connection.php");
@@ -17,6 +17,39 @@ function getOrders(){
   $stmt->execute();
 
   $result = $stmt->fetchALL();
+  return $result;
+
+}
+
+// Get user for editing
+function getUsers(){
+
+  include ("includes/connection.php");
+
+  $sql = "SELECT * FROM `employee`";
+
+  $stmt = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+  $stmt->execute();
+
+  $result = $stmt->fetchALL();
+  return $result;
+
+}
+
+// Get user for editing
+function getUserInfo($employee_id){
+
+  include ("includes/connection.php");
+
+  $sql = "SELECT * FROM `employee` WHERE `employee_id` = :employee_id";
+
+  $stmt = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+  $stmt->execute(array(
+    ':employee_id' => $employee_id
+  ));
+
+  $result["count"] = $stmt->rowCount();
+  $result["info"] = $stmt->fetchALL();
   return $result;
 
 }
@@ -59,7 +92,7 @@ function logIn(){
   <div id="login-content">
     <div class="container-fluid">
       <div id="login" class="title-box blue">
-        <p><i class="fa fa-user-circle-o" aria-hidden="true"></i> Login</p>
+        <p><i class="fas fa-user-circle"></i> Login</p>
       </div>
       <div class="row">
         <div class="col-lg-12 loginHeader">

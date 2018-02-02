@@ -40,6 +40,7 @@
   if (!isset($_SESSION["login"]["Succesful"])) {
     login();
   }
+  var_dump($_POST);
 ?>
   <div class="wrapper">
     <!-- Sidebar Holder -->
@@ -79,7 +80,7 @@
               <i class="glyphicon glyphicon-align-left"></i>
               <span>Toggle Sidebar</span>
             </button>
-            <h2> Dashboard </h2>
+            <h2> Medewerkers </h2>
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -93,32 +94,137 @@
         <div class="container-fluid">
           <div class="row">
 
-            <div class="col-lg-12">
-              <div class="container-fluid shadow-box">
-                <div class="title-box teal">
-                  <p>Medewerkers</p>
+            <?php
+            if (isset($_GET["user"])) {
+              echo '<form action="users.php" method="post" class="">';
+              if ($_GET["user"] == 'add') {
+                echo '<input type="hidden" name="type" value="add">';
+              }
+              else {
+                $result = getUserInfo($_GET["user"]);
+                if ($result["count"] != 1) {
+                  $error = '404';
+                }
+                else {
+                  echo '<input type="hidden" name="type" value="edit">';
+                  echo '<input type="hidden" name="user" value="'.$_GET["user"].'">';
+                }
+              }
+              if (isset($error)) {
+                echo $error;
+              }
+              else {
+                echo '
+                <div class="col-lg-8">
+                  <div class="container-fluid shadow-box">
+                    <div class="title-box'; if ($_GET['user'] == 'add') { echo " teal "; } else { echo " yellow ";} echo '">
+                      <p>'; if ($_GET['user'] == 'add') { echo " Medewerker aanmaken: "; } else { echo ' Wijzig '.$result["info"][0]["employee_name"].':';} echo '</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="">Naam:</label>
+                      <input type="text" class="form-control" value="'; if ($_GET['user'] != 'add') { echo $result['info'][0]['employee_name']; } echo '" name="employee_name" id="" required placeholder="Voor- en achternaam">
+                      <p class="help-block">De voor- en achternaam van de medewerker.</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="">E-mailadres</label>
+                      <input type="text" class="form-control" value="'; if ($_GET['user'] != 'add') { echo $result['info'][0]['e-mail']; } echo '" name="email" id="" required placeholder="E-mailadres">
+                      <p class="help-block">Het e-mailadres van de medewerker.</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="">Wachtwoord</label>
+                      <input type="text" class="form-control" name="password" id="" '; if ($_GET['user'] == 'add') { echo " required "; } echo 'placeholder="Wachtwoord">
+                      <p class="help-block">'; if ($_GET['user'] == 'add') { echo "Het wachtwoord voor de medewerker."; } else { echo "Wijzig het wachtwoord van de medewerker. Laat leeg als het wachtwoord niet gewijzigd moet worden.";} echo '</p>
+                    </div>
+                    <div class="form-group">
+                      <label for="">Rechten</label>
+                      <select class="form-control" required name="power">
+                        <option value="0">Gebruiker</option>
+                        <option '; ; if ($_GET['user'] != 'add') { if ($result["info"][0]["power"] == 1) { echo "selected "; } } echo 'value="1">Admin</option>
+                      </select>
+                      <p class="help-block">De rechten van de gebruiker.</p>
+                    </div>
+                    <div class="form-group">
+                      <button type="input" name="formSubmit" value="true" class="btn btn-secondary btn-lg">'; if ($_GET['user'] == 'add') { echo " Aanmaken "; } else { echo " Aanpassen ";} echo '</button>
+                    </div>
+                  </div>
                 </div>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Naam:</th>
-                      <th>E-mailadres:</th>
-                      <th>Admin:</th>
-                      <th>Mogelijkheden:</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Robin Baljeu</td>
-                      <td>Rcbaljeu@gmail.com</td>
-                      <td><i class="fas fa-check correct"></i></td>
-                    </tr>
-                  </tbody>
-                </table>
+
+                </form>
+
+                <div class="col-lg-4">
+                  <div class="container-fluid shadow-box">
+                    <div class="title-box red">
+                      <p>Verwijderen</p>
+                    </div>
+
+                    <p> Wilt u deze user zeker weten verwijderen? </p>
+                    <form action="users.php" method="post" class="">
+                      <div class="form-group">
+                        <input type="hidden" name="user" value="'.$_GET["user"].'">
+                        <button type="input" class="btn btn-secondary btn-lg btn-block">Verwijderen</button>
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
+
+                <div class="addUser">
+                  <a href="users.php"><button type="button" class="btn btn-default btn-lg"><i class="fas fa-arrow-circle-left"></i> Ga terug</button></a>
+                </div>
+                ';
+              }
+            }
+            else {
+              echo '
+              <div class="col-lg-12">
+                <div class="container-fluid shadow-box">
+                  <div class="title-box teal">
+                    <p>Medewerkers</p>
+                  </div>
+                  <table id="userTable" class="table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Naam:</th>
+                        <th>E-mailadres:</th>
+                        <th>Admin:</th>
+                        <th>Mogelijkheden:</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    ';
+                    $results = getUsers();
+                    $number = 1;
+                    foreach ($results as $user) {
+                      echo '
+                        <tr>
+                          <td>'.$number.'</td>
+                          <td>'.$user["employee_name"].'</td>
+                          <td>'.$user["e-mail"].'</td>
+                          <td>'; if ($user["power"] == 1) {
+                            echo '<i class="fas fa-check correct">';
+                          }
+                          else {
+                            echo '<i class="fas fa-times"></i>';
+                          } echo '</td>
+                          <td><a href="users.php?user=1"><i class="fas fa-pencil-alt"></i> / <i class="fas fa-trash-alt"></i></a></td>
+                        </tr>
+                      ';
+                      $number++;
+                    }
+                    echo '
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+
+              <div class="addUser">
+                <a href="users.php?user=add"><button type="button" class="btn btn-success btn-lg"><i class="fas fa-plus"></i> Gebruiker toevoegen</button></a>
+              </div>
+              ';
+            }
+
+            ?>
 
           </div>
         </div>
