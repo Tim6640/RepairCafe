@@ -226,3 +226,7 @@ a[aria-expanded="true"]::before {
 .red{
   background-color: #f44336;
 }
+
+.inputInfo{
+    max-width: 100px;
+}

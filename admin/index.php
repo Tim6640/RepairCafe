@@ -37,9 +37,9 @@
 
 <body>
 <?php
-  if (!isset($_SESSION["login"]["Succesful"])) {
-    login();
-  }
+//  if (!isset($_SESSION["login"]["Succesful"])) {
+//    login();
+//  }
 ?>
   <div class="wrapper">
     <!-- Sidebar Holder -->
@@ -142,21 +142,62 @@
                 ';
               }
               elseif (isset($_GET['order'])) {
+              $currentOrder = getOrderInfo($_GET['order']);
+              $productInfo = getProductInfo($currentOrder[0]['product_id']);
                 echo '
-                  <div class="col-lg-12">
+                  <div class="col-lg-8">
                     <div class="container-fluid shadow-box">
                       <div class="title-box blue">
-                        <p>Orders</p>
+                        <p>Klant: ' . $currentOrder[0]['customer_name'] .' <span style="margin-left:50px">Product: '. $productInfo[0]['product_name'] .'</span></p>
                       </div>
                       ';
-                      $currentOrder = getOrderInfo($_GET['order']);
-                      foreach ($currentOrder as $order){
+                      foreach ($productInfo as $order){
                         echo '
-                          Hier komt de informatie over de reparatie
+                        <div class="col-lg-6">
+                          <p1>Probleem van de klant: <br> '. $order['info_problem'] .'</p1>
+                        </div>
+                        <div class="col-lg-6">
+                          <img src="http://via.placeholder.com/300x250">
+                        </div>
+                        <div class="col-lg-12">
+                          <p1>Wat de klant al heeft geprobeerd: <br> '. $order['info_tried'] .'<br></p1>
+                        </div>   
                         ';
                       }
                     echo '
                     </div>
+                  </div>
+                  
+                  <div class="col-lg-4">
+                  <div class="container-fluid shadow-box">
+                      <div class="title-box blue">
+                        <p>Order info</p>
+                      </div>
+                      <p1>Order status: </p1>
+                      <select title="Order status">
+                        <option value="open">Open</option>
+                        <option value="inprogress">In progress</option>
+                        <option value="done">Done</option>
+                      </select>
+                      <form name="material" method="post">
+                          <table title="Materiaal gebruikt" class="table inputInfo">
+                            <thead>
+                                <tr>
+                                    <td>Materiaal</td>
+                                    <td>Hoeveelheid</td>
+                                    <td>Prijs per stuk</td>
+                                </tr>
+                                <tr>
+                                    <td><input class="inputInfo" type="text"></td>
+                                    <td><input class="inputInfo" type="number"></td>
+                                    <td><input class="inputInfo" type="number"></td>
+                                </tr>
+                            </thead>
+                          </table>
+                      </form>
+                      <select title="Assigned to">
+                        <option value="open">Open</option>
+                      </select>
                   </div>
                 ';
               }
