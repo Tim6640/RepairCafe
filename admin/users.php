@@ -41,18 +41,46 @@
     login();
   }
   var_dump($_POST);
+
+  if (isset($_POST['type'])) {
+    switch ($_POST['type']) {
+      case 'add':
+          if (isset($_POST["employee_name"]) && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["power"])) {
+            addUser($_POST["employee_name"], $_POST["password"], $_POST["email"], $_POST["power"]);
+          }
+        break;
+
+      case 'edit':
+        if (isset($_POST["employee_name"]) && isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["power"]) && isset($_POST["user"])) {
+          if ($_POST["password"] != "") {
+            updateUserPass($_POST["user"], $_POST["employee_name"], $_POST["password"], $_POST["email"], $_POST["power"]);
+          }
+          else {
+            updateUser($_POST["user"], $_POST["employee_name"], $_POST["email"], $_POST["power"]);
+          }
+        }
+        break;
+
+      case 'delete':
+        if (isset($_POST['type'])) {
+          deleteUser($_POST["user"]);
+        }
+        break;
+
+    }
+  }
 ?>
   <div class="wrapper">
     <!-- Sidebar Holder -->
     <nav id="sidebar">
       <div class="sidebar-header">
-        <img src="http://via.placeholder.com/250x150">
+        <img src="img/logo.jpg" class="headerImg">
       </div>
 
       <ul class="list-unstyled components">
         <p>Adminpanel</p>
-        <li class="active">
-          <a href="#">Dashboard</a>
+        <li>
+          <a href="index.php">Dashboard</a>
         </li>
         <li>
           <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Orders</a>
@@ -65,10 +93,36 @@
         <li>
           <a href="#">Contact Form</a>
         </li>
-        <li>
-          <a href="users.php">Medewerkers</a>
-        </li>
+        <?php
+          if (isset($_SESSION["login"]["power"])) {
+            if ($_SESSION["login"]["power"] == 1) {
+              echo '
+              <li class="active">
+                <a href="users.php">Medewerkers</a>
+              </li>
+              ';
+            }
+          }
+        ?>
       </ul>
+      <div class="sidebar-footer" style="bottom: 0;position: absolute;left: 0;height: auto;width: 250px;">
+        <div class="container-fluid">
+          <div class="row" style="margin-bottom: 15px;">
+            <div class="col-lg-12">
+              <h4 style="text-align: center;">Welkom:</h4>
+              <p style="text-align: center;">Robin Baljeu</p>
+            </div>
+            <div class="col-lg-6">
+              <button class="btn btn-default" style="width: 100%;">Profile</button>
+            </div>
+            <div class="col-lg-6" style="/*! width: 100%; */">
+              <a href="logout.php">
+                <button class="btn btn-default" style="width: 100%;">Loguit</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
     <!-- Page Content Holder -->
     <div id="content">
@@ -84,9 +138,9 @@
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
+            <!-- <ul class="nav navbar-nav navbar-right">
               <li><a href="#">Loguit</a></li>
-            </ul>
+            </ul> -->
           </div>
         </div>
       </nav>
@@ -96,7 +150,7 @@
 
             <?php
             if (isset($_GET["user"])) {
-              echo '<form action="users.php" method="post" class="">';
+              echo '<form action="users.php" method="post">';
               if ($_GET["user"] == 'add') {
                 echo '<input type="hidden" name="type" value="add">';
               }
@@ -132,7 +186,7 @@
                     </div>
                     <div class="form-group">
                       <label for="">Wachtwoord</label>
-                      <input type="text" class="form-control" name="password" id="" '; if ($_GET['user'] == 'add') { echo " required "; } echo 'placeholder="Wachtwoord">
+                      <input type="password" class="form-control" name="password" id="" '; if ($_GET['user'] == 'add') { echo " required "; } echo 'placeholder="Wachtwoord">
                       <p class="help-block">'; if ($_GET['user'] == 'add') { echo "Het wachtwoord voor de medewerker."; } else { echo "Wijzig het wachtwoord van de medewerker. Laat leeg als het wachtwoord niet gewijzigd moet worden.";} echo '</p>
                     </div>
                     <div class="form-group">
@@ -151,27 +205,31 @@
 
                 </form>
 
-                <div class="col-lg-4">
-                  <div class="container-fluid shadow-box">
-                    <div class="title-box red">
-                      <p>Verwijderen</p>
-                    </div>
-
-                    <p> Wilt u deze user zeker weten verwijderen? </p>
-                    <form action="users.php" method="post" class="">
-                      <div class="form-group">
-                        <input type="hidden" name="user" value="'.$_GET["user"].'">
-                        <button type="input" class="btn btn-secondary btn-lg btn-block">Verwijderen</button>
-                      </div>
-                    </form>
-
-                  </div>
-                </div>
-
                 <div class="addUser">
                   <a href="users.php"><button type="button" class="btn btn-default btn-lg"><i class="fas fa-arrow-circle-left"></i> Ga terug</button></a>
                 </div>
                 ';
+
+                if ($_GET['user'] != 'add') {
+                  echo '
+                  <div class="col-lg-4">
+                    <div class="container-fluid shadow-box">
+                      <div class="title-box red">
+                        <p>Verwijderen</p>
+                      </div>
+
+                      <p> Wilt u deze user zeker weten verwijderen? </p>
+                      <form action="users.php" method="post" class="">
+                        <div class="form-group">
+                          <input type="hidden" name="user" value="'.$_GET["user"].'">
+                          <button type="input" name="type" value="delete" class="btn btn-secondary btn-lg btn-block">Verwijderen</button>
+                        </div>
+                      </form>
+
+                    </div>
+                  </div>
+                  ';
+                }
               }
             }
             else {
@@ -207,7 +265,7 @@
                           else {
                             echo '<i class="fas fa-times"></i>';
                           } echo '</td>
-                          <td><a href="users.php?user=1"><i class="fas fa-pencil-alt"></i> / <i class="fas fa-trash-alt"></i></a></td>
+                          <td><a href="users.php?user='.$user["employee_id"].'"><i class="fas fa-pencil-alt"></i> / <i class="fas fa-trash-alt"></i></a></td>
                         </tr>
                       ';
                       $number++;
