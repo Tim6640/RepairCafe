@@ -164,6 +164,7 @@
                         </div>   
                         ';
                       }
+
                     echo '
                     </div>
                   </div>
@@ -173,32 +174,86 @@
                       <div class="title-box blue">
                         <p>Order info</p>
                       </div>
-                      <p1>Order status: </p1>
-                      <select title="Order status">
-                        <option value="open">Open</option>
-                        <option value="inprogress">In progress</option>
-                        <option value="done">Done</option>
-                      </select>
-                      <form name="material" method="post">
-                          <table title="Materiaal gebruikt" class="table inputInfo">
-                            <thead>
-                                <tr>
-                                    <td>Materiaal</td>
-                                    <td>Hoeveelheid</td>
-                                    <td>Prijs per stuk</td>
-                                </tr>
-                                <tr>
-                                    <td><input class="inputInfo" type="text"></td>
-                                    <td><input class="inputInfo" type="number"></td>
-                                    <td><input class="inputInfo" type="number"></td>
-                                </tr>
-                            </thead>
-                          </table>
-                      </form>
-                      <select title="Assigned to">
-                        <option value="open">Open</option>
-                      </select>
-                  </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                        <form name="order_info" method="post">
+                          <p1>Order status: </p1>
+                          <select name="order_status" title="order_status">
+                            <option value="open">Open</option>
+                            <option value="inprogress">In progress</option>
+                            <option value="done">Done</option>
+                          </select>
+                              <table title="Materiaal gebruikt" class="table inputInfo">
+                                <thead>
+                                    <tr>
+                                        <td>Materiaal</td>
+                                        <td>Hoeveelheid</td>
+                                        <td>Prijs per stuk</td>
+                                        <td>Toevoegen/verwijderen</td>
+                                    </tr>
+                                    ';
+                                    foreach (getMaterials($_GET['order']) as $material) {
+                                        echo '
+                                            <tr>
+                                                <td>'.$material['material_name'].'</td>
+                                                <td>'.$material['amount'].'</td>
+                                                <td>'.$material['price'].'</td>
+                                                <td><button name="delete"><i class="fas fa-trash-alt"></i></button></td>
+                                                <input type="hidden" name="material_id" value="'.$material['material_id'].'">
+                                            </tr>
+                                        ';
+                                    }
+                  echo'
+                                        <tr>
+                                            <td><input type="text" name="material"></td>
+                                            <td><input type="number" name="amount"></td>
+                                            <td><input type="number" step=".01" name="cost"></td>
+                                            <td><button name="material_add"><i class="fas fa-plus"></i></button></td>
+                                        </tr>
+                                </thead>
+                              </table>
+                          <p1>Taak toewijzen aan: 
+                          <select name="order_employee" title="Assigned to">
+                          <option value="none">Open</option>
+                          ';
+                            $users = getUsers();
+                            foreach($users as $user){
+                                echo'
+                                    <option value="open">'. $user["employee_name"] .'</option>
+                                ';
+                            }
+                            echo '
+                          </select>
+                          <br>Probleem categorie: </p1>
+                          <select>
+                            <option value="software">software</option>
+                            <option value="hardware">hardware</option>
+                          </select>
+                         <br>Eventueel extra informatie: </p1>
+                          <textarea style=" width: 100% "></textarea>
+                         </div>
+                         <div class="col-lg-12">
+                          <button type="submit" name="cancel" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</button> <button type="submit" name="submit" class="btn btn-success"><i class="fas fa-check"></i> Confirm</button>
+                         </form>
+                  ';
+                  if(isset($_POST['material_add'])){
+                      if(!empty($_POST['material'] && $_POST['amount'] && $_POST['cost'])){
+                          addMaterial($_GET['order'], $_POST['material'], $_POST['amount'], $_POST['cost']);
+                          header("Location: index.php".$_POST['order']);
+                      }
+                  }
+                  if(isset($_POST['delete'])){
+                      if(isset($_POST['material_id'])){
+                          deleteMaterial($_POST['material_id']);
+                      }
+                  }
+                  if (isset($_POST['submit'])){
+
+                  }
+                         echo'
+                         </div>
+                     </div>
+                 </div>
                 ';
               }
               ?>
