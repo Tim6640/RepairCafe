@@ -85,8 +85,73 @@ function getProductInfo($product_id) {
     return $result;
 }
 
-function updateMaterial(){
+function updateOrderInfo($order_id, $status, $costs, $category, $employee) {
+    include ("includes/connection.php");
 
+    $sql = "UPDATE repair_order SET status = :status, costs = :costs, category = :category, employee_name = :employee WHERE order_id = :order_id";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute(array(
+        ':order_id' => $order_id,
+        ':costs' => $costs,
+        ':category' => $category,
+        ':employee' => $employee,
+        ':status' => $status
+    ));
+}
+
+function getMaterials($order_id) {
+
+    include ("includes/connection.php");
+
+    $sql = "SELECT * FROM material WHERE order_id = :order_id";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute(array(
+        ':order_id' => $order_id
+    ));
+
+    $result = $stmt->fetchALL();
+    return $result;
+}
+
+function getCosts($materialItems){
+    include ("includes/connection.php");
+
+    $sql = "UPDATE repair_order SET status = :status, costs = :costs, category = :category, employee_name = :employee WHERE order_id = :order_id";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute(array(
+        ':order_id' => $order_id
+    ));
+}
+
+function addMaterial($order_id, $material, $amount, $cost){
+
+    include ("includes/connection.php");
+
+    $sql = "INSERT INTO material (material_name, amount, price, order_id)
+            VALUES (:material, :amount, :cost, :order_id)";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute(array(
+        ':order_id' => $order_id,
+        ':material' => $material,
+        ':amount' => $amount,
+        ':cost' => $cost
+    ));
+}
+
+function deleteMaterial($material_id){
+
+    include ("includes/connection.php");
+
+    $sql = "DELETE FROM material WHERE material_id = :material_id";
+
+    $stmt = $db->prepare($sql);
+    $stmt->execute(array(
+        ':material_id' => $material_id
+    ));
 }
 
 // Login Function
