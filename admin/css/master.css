@@ -265,3 +265,7 @@ a[aria-expanded="true"]::before {
   background: white;
   border-bottom: 1px solid #eee;
 }
+
+.inputInfo{
+    max-width: 100px;
+}

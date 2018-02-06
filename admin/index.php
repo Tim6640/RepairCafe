@@ -37,9 +37,9 @@
 
 <body>
 <?php
-  if (!isset($_SESSION["login"]["Succesful"])) {
-    login();
-  }
+//  if (!isset($_SESSION["login"]["Succesful"])) {
+//    login();
+//  }
 ?>
   <div class="alert alert-dismissable fade in" style="position: absolute;z-index: 1000;left: 50%;width: 50%;margin-left: -25%;margin-top: 25px;">
     <div class="container-fluid shadow-box" style="box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);">
@@ -178,22 +178,118 @@
                 ';
               }
               elseif (isset($_GET['order'])) {
+              $currentOrder = getOrderInfo($_GET['order']);
+              $productInfo = getProductInfo($currentOrder[0]['product_id']);
                 echo '
-                  <div class="col-lg-12">
+                  <div class="col-lg-8">
                     <div class="container-fluid shadow-box">
                       <div class="title-box blue">
-                        <p>Orders</p>
+                        <p>Klant: ' . $currentOrder[0]['customer_name'] .' <span style="margin-left:50px">Product: '. $productInfo[0]['product_name'] .'</span></p>
                       </div>
                       ';
-                      $currentOrder = getOrderInfo($_GET['order']);
-                      foreach ($currentOrder as $order){
+                      foreach ($productInfo as $order){
                         echo '
-                          Hier komt de informatie over de reparatie
+                        <div class="col-lg-6">
+                          <p1>Probleem van de klant: <br> '. $order['info_problem'] .'</p1>
+                        </div>
+                        <div class="col-lg-6">
+                          <img src="http://via.placeholder.com/300x250">
+                        </div>
+                        <div class="col-lg-12">
+                          <p1>Wat de klant al heeft geprobeerd: <br> '. $order['info_tried'] .'<br></p1>
+                        </div>   
                         ';
                       }
+
                     echo '
                     </div>
                   </div>
+                  
+                  <div class="col-lg-4">
+                  <div class="container-fluid shadow-box">
+                      <div class="title-box blue">
+                        <p>Order info</p>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                        <form name="order_info" method="post">
+                          <p1>Order status: </p1>
+                          <select name="order_status" title="order_status">
+                            <option value="open">Open</option>
+                            <option value="inprogress">In progress</option>
+                            <option value="done">Done</option>
+                          </select>
+                              <table title="Materiaal gebruikt" class="table inputInfo">
+                                <thead>
+                                    <tr>
+                                        <td>Materiaal</td>
+                                        <td>Hoeveelheid</td>
+                                        <td>Prijs per stuk</td>
+                                        <td>Toevoegen/verwijderen</td>
+                                    </tr>
+                                    ';
+                                    foreach (getMaterials($_GET['order']) as $material) {
+                                        echo '
+                                            <tr>
+                                                <td>'.$material['material_name'].'</td>
+                                                <td>'.$material['amount'].'</td>
+                                                <td>'.$material['price'].'</td>
+                                                <td><button name="delete"><i class="fas fa-trash-alt"></i></button></td>
+                                                <input type="hidden" name="material_id" value="'.$material['material_id'].'">
+                                            </tr>
+                                        ';
+                                    }
+                  echo'
+                                        <tr>
+                                            <td><input type="text" name="material"></td>
+                                            <td><input type="number" name="amount"></td>
+                                            <td><input type="number" step=".01" name="cost"></td>
+                                            <td><button name="material_add"><i class="fas fa-plus"></i></button></td>
+                                        </tr>
+                                </thead>
+                              </table>
+                          <p1>Taak toewijzen aan: 
+                          <select name="order_employee" title="Assigned to">
+                          <option value="none">Open</option>
+                          ';
+                            $users = getUsers();
+                            foreach($users as $user){
+                                echo'
+                                    <option value="open">'. $user["employee_name"] .'</option>
+                                ';
+                            }
+                            echo '
+                          </select>
+                          <br>Probleem categorie: </p1>
+                          <select>
+                            <option value="software">software</option>
+                            <option value="hardware">hardware</option>
+                          </select>
+                         <br>Eventueel extra informatie: </p1>
+                          <textarea style=" width: 100% "></textarea>
+                         </div>
+                         <div class="col-lg-12">
+                          <button type="submit" name="cancel" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</button> <button type="submit" name="submit" class="btn btn-success"><i class="fas fa-check"></i> Confirm</button>
+                         </form>
+                  ';
+                  if(isset($_POST['material_add'])){
+                      if(!empty($_POST['material'] && $_POST['amount'] && $_POST['cost'])){
+                          addMaterial($_GET['order'], $_POST['material'], $_POST['amount'], $_POST['cost']);
+                          header("Location: index.php".$_POST['order']);
+                      }
+                  }
+                  if(isset($_POST['delete'])){
+                      if(isset($_POST['material_id'])){
+                          deleteMaterial($_POST['material_id']);
+                      }
+                  }
+                  if (isset($_POST['submit'])){
+
+                  }
+                         echo'
+                         </div>
+                     </div>
+                 </div>
                 ';
               }
               ?>
