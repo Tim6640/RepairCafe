@@ -21,6 +21,95 @@ function getOrders(){
 
 }
 
+// Add new user
+function addUser($employee_name, $password, $email, $power){
+
+  $password2 = htmlspecialchars($password);
+  $hashedPass = hash("sha256", $password2);
+
+  include ("includes/connection.php");
+
+  $sql = "INSERT INTO `employee` (`employee_id`, `employee_name`, `password`, `e-mail`, `power`) VALUES (NULL, :employee_name, :password, :email, :powers);";
+
+  $stmt = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+  $stmt->execute(array(
+    ':employee_name'  =>  $employee_name,
+    ':password'       =>  $hashedPass,
+    ':email'          =>  $email,
+    ':powers'         =>  $power
+  ));
+
+}
+
+// Check if a user already exists
+function checkUser($email){
+
+  include ("includes/connection.php");
+
+  $sql = "SELECT * FROM `employee` WHERE `e-mail` = :email";
+
+  $stmt = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+  $stmt->execute(array(
+    ':email' => $email
+  ));
+
+  $result = $stmt->fetchALL();
+  return $result;
+
+}
+
+// Gebruikers wijzigen With password
+function updateUserPass($id, $employee_name, $password, $email, $power) {
+
+  $password2 = htmlspecialchars($password);
+  $hashedPass = hash("sha256", $password2);
+
+  include ("includes/connection.php");
+
+  $sql = "UPDATE `employee` SET `employee_name`=:name,`password`=:password,`e-mail`=:email,`power`=:powers WHERE `employee_id` = :id";
+
+  $stmt = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+  $stmt->execute(array(
+    ':id'       =>  $id,
+    ':name'     =>  $employee_name,
+    ':password' =>  $hashedPass,
+    ':email'    =>  $email,
+    ':powers'   =>  $power
+  ));
+
+}
+
+// Gebruikers wijzigen Without password
+function updateUser($id, $employee_name, $email, $power) {
+
+  include ("includes/connection.php");
+
+  $sql = "UPDATE `employee` SET `employee_name`=:name,`e-mail`=:email,`power`=:powers WHERE `employee_id` = :id";
+
+  $stmt = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+  $stmt->execute(array(
+    ':id'       =>  $id,
+    ':name'     =>  $employee_name,
+    ':email'    =>  $email,
+    ':powers'   =>  $power
+  ));
+
+}
+
+// Gebruiker verwijderen
+function deleteUser($id) {
+
+  include ("includes/connection.php");
+
+  $sql = "DELETE FROM `employee` WHERE `employee_id` = :id";
+
+  $stmt = $db->prepare($sql, array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY));
+  $stmt->execute(array(
+    ':id' => $id
+  ));
+
+}
+
 // Get user for editing
 function getUsers(){
 

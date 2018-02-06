@@ -41,17 +41,27 @@
     login();
   }
 ?>
+  <div class="alert alert-dismissable fade in" style="position: absolute;z-index: 1000;left: 50%;width: 50%;margin-left: -25%;margin-top: 25px;">
+    <div class="container-fluid shadow-box" style="box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);">
+      <div class="title-box teal">
+        <p style="padding-right: 30px;">Success! <a href="#" class="close" data-dismiss="alert" aria-label="close" style="font-size: 45px;opacity: 1;">×</a></p>
+      </div>
+
+      <p>This alert box could indicate a successful or positive action.</p>
+
+    </div>
+  </div>
   <div class="wrapper">
     <!-- Sidebar Holder -->
     <nav id="sidebar">
       <div class="sidebar-header">
-        <img src="http://via.placeholder.com/250x150">
+        <img src="img/logo.jpg" class="headerImg">
       </div>
 
       <ul class="list-unstyled components">
         <p>Adminpanel</p>
         <li class="active">
-          <a href="#">Dashboard</a>
+          <a href="index.php">Dashboard</a>
         </li>
         <li>
           <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Orders</a>
@@ -64,10 +74,36 @@
         <li>
           <a href="#">Contact Form</a>
         </li>
-        <li>
-          <a href="users.php">Medewerkers</a>
-        </li>
+        <?php
+          if (isset($_SESSION["login"]["power"])) {
+            if ($_SESSION["login"]["power"] == 1) {
+              echo '
+              <li>
+                <a href="users.php">Medewerkers</a>
+              </li>
+              ';
+            }
+          }
+        ?>
       </ul>
+      <div class="sidebar-footer" style="bottom: 0;position: absolute;left: 0;height: auto;width: 250px;">
+        <div class="container-fluid">
+          <div class="row" style="margin-bottom: 15px;">
+            <div class="col-lg-12">
+              <h4 style="text-align: center;">Welkom:</h4>
+              <p style="text-align: center;">Robin Baljeu</p>
+            </div>
+            <div class="col-lg-6">
+              <button class="btn btn-default" style="width: 100%;">Profile</button>
+            </div>
+            <div class="col-lg-6" style="/*! width: 100%; */">
+              <a href="logout.php">
+                <button class="btn btn-default" style="width: 100%;">Loguit</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
     <!-- Page Content Holder -->
     <div id="content">
@@ -83,9 +119,9 @@
           </div>
 
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
+            <!-- <ul class="nav navbar-nav navbar-right">
               <li><a href="#">Loguit</a></li>
-            </ul>
+            </ul> -->
           </div>
         </div>
       </nav>
