@@ -267,5 +267,5 @@ a[aria-expanded="true"]::before {
 }
 
 .inputInfo{
-    max-width: 100px;
+    width: 100px;
 }
