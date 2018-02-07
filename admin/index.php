@@ -239,12 +239,13 @@
                   if(isset($_POST['material_add'])){
                       if(!empty($_POST['material'] && $_POST['amount'] && $_POST['cost'])){
                           addMaterial($_GET['order'], $_POST['material'], $_POST['amount'], $_POST['cost']);
-                          header("Location: index.php".$_POST['order']);
+                          echo "<meta http-equiv='refresh' content='0'>";
                       }
                   }
                   if(isset($_POST['delete'])){
                       if(isset($_POST['material_id'])){
                           deleteMaterial($_POST['material_id']);
+                          echo "<meta http-equiv='refresh' content='0'>";
                       }
                   }
                   if (isset($_POST['submit'])){
