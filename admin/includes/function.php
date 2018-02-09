@@ -174,18 +174,18 @@ function getProductInfo($product_id) {
     return $result;
 }
 
-function updateOrderInfo($order_id, $status, $costs, $category, $employee) {
+function updateOrderInfo($order_id, $status, $category, $employee, $info) {
     include ("includes/connection.php");
 
-    $sql = "UPDATE repair_order SET status = :status, costs = :costs, category = :category, employee_name = :employee WHERE order_id = :order_id";
+    $sql = "UPDATE repair_order SET status = :status, category = :category, employee_name = :employee, info = :info WHERE order_id = :order_id";
 
     $stmt = $db->prepare($sql);
     $stmt->execute(array(
         ':order_id' => $order_id,
-        ':costs' => $costs,
         ':category' => $category,
         ':employee' => $employee,
-        ':status' => $status
+        ':status' => $status,
+        ':info' => $info
     ));
 }
 

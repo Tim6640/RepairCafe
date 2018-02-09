@@ -41,16 +41,16 @@
 //    login();
 //  }
 ?>
-  <div class="alert alert-dismissable fade in" style="position: absolute;z-index: 1000;left: 50%;width: 50%;margin-left: -25%;margin-top: 25px;">
-    <div class="container-fluid shadow-box" style="box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);">
-      <div class="title-box teal">
-        <p style="padding-right: 30px;">Success! <a href="#" class="close" data-dismiss="alert" aria-label="close" style="font-size: 45px;opacity: 1;">×</a></p>
-      </div>
-
-      <p>This alert box could indicate a successful or positive action.</p>
-
-    </div>
-  </div>
+<!--  <div class="alert alert-dismissable fade in" style="position: absolute;z-index: 1000;left: 50%;width: 50%;margin-left: -25%;margin-top: 25px;">-->
+<!--    <div class="container-fluid shadow-box" style="box-shadow: 1px 1px 3px rgba(0, 0, 0, 1);">-->
+<!--      <div class="title-box teal">-->
+<!--        <p style="padding-right: 30px;">Success! <a href="#" class="close" data-dismiss="alert" aria-label="close" style="font-size: 45px;opacity: 1;">×</a></p>-->
+<!--      </div>-->
+<!---->
+<!--      <p>This alert box could indicate a successful or positive action.</p>-->
+<!---->
+<!--    </div>-->
+<!--  </div>-->
   <div class="wrapper">
     <!-- Sidebar Holder -->
     <nav id="sidebar">
@@ -200,7 +200,20 @@
                         </div>   
                         ';
                       }
-
+                      $open =  null;
+                      $inprogress = null;
+                      $done = null;
+                      switch ($currentOrder[0]['status']) {
+                          case "open":
+                              $open = "selected";
+                              break;
+                          case "inprogress":
+                              $inprogress = "selected";
+                              break;
+                          case "done":
+                              $done = "done";
+                              break;
+                      }
                     echo '
                     </div>
                   </div>
@@ -215,17 +228,17 @@
                         <form name="order_info" method="post">
                           <p1>Order status: </p1>
                           <select name="order_status" title="order_status">
-                            <option value="open">Open</option>
-                            <option value="inprogress">In progress</option>
-                            <option value="done">Done</option>
+                            <option '. $open .' value="open">Open</option>
+                            <option '. $inprogress .' value="inprogress">In progress</option>
+                            <option '. $done .' value="done">Done</option>
                           </select>
                               <table title="Materiaal gebruikt" class="table inputInfo">
                                 <thead>
                                     <tr>
-                                        <td>Materiaal</td>
-                                        <td>Hoeveelheid</td>
-                                        <td>Prijs per stuk</td>
-                                        <td>Toevoegen/verwijderen</td>
+                                        <th>Materiaal</th>
+                                        <th>Hoeveelheid</th>
+                                        <th>Prijs per stuk</th>
+                                        <th>Toevoegen/verwijderen</th>
                                     </tr>
                                     ';
                                     foreach (getMaterials($_GET['order']) as $material) {
@@ -239,6 +252,8 @@
                                             </tr>
                                         ';
                                     }
+
+                                    
                   echo'
                                         <tr>
                                             <td><input type="text" name="material"></td>
@@ -249,24 +264,25 @@
                                 </thead>
                               </table>
                           <p1>Taak toewijzen aan: 
+                          
                           <select name="order_employee" title="Assigned to">
-                          <option value="none">Open</option>
-                          ';
-                            $users = getUsers();
-                            foreach($users as $user){
-                                echo'
-                                    <option value="open">'. $user["employee_name"] .'</option>
-                                ';
-                            }
-                            echo '
+                              <option value="none">Open</option>
+                              ';
+                                $users = getUsers();
+                                foreach($users as $user){
+                                    echo'
+                                        <option value="'. $user["employee_name"] .'">'. $user["employee_name"] .'</option>
+                                    ';
+                                }
+                                echo '
                           </select>
                           <br>Probleem categorie: </p1>
-                          <select>
+                          <select name="order_category">
                             <option value="software">software</option>
                             <option value="hardware">hardware</option>
                           </select>
                          <br>Eventueel extra informatie: </p1>
-                          <textarea style=" width: 100% "></textarea>
+                          <textarea name="info" style=" width: 100% "></textarea>
                          </div>
                          <div class="col-lg-12">
                           <button type="submit" name="cancel" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</button> <button type="submit" name="submit" class="btn btn-success"><i class="fas fa-check"></i> Confirm</button>
@@ -285,7 +301,11 @@
                       }
                   }
                   if (isset($_POST['submit'])){
-
+                      $status = $_POST['order_status'];
+                      $assignee = $_POST['order_employee'];
+                      $category = $_POST['order_category'];
+                      $info = $_POST['info'];
+                      updateOrderInfo($_GET['order'], $status, $category, $assignee, $info);
                   }
                          echo'
                          </div>
