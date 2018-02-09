@@ -1,3 +1,25 @@
+<?php
+session_start();
+include ("../includes/functions.php");
+if (isset($_POST["login"])) {
+  if (isset($_POST["login_email"]) && isset($_POST["login_password"])) {
+    if (!empty($_POST["login_email"]) || !empty($_POST["login_password"])) {
+      $result = loginCheck($_POST["login_email"], $_POST["login_password"]);
+      if ($result["count"] == 1) {
+        $_SESSION["user"]["login"] = true;
+        $_SESSION["user"]["id"] = $result["info"][0]["customer_id"];
+        $_SESSION["user"]["name"] = $result["info"][0]["customer_name"];
+        $_SESSION["user"]["email"] = $result["info"][0]["e-mail"];
+      }
+    }
+    else {
+      $message = "Vull alle velden in!";
+      $error = true;
+    }
+  }
+}
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -40,8 +62,9 @@
           </div>
           <div id="navigation" class="collapse navbar-collapse navbar-right">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="index.html">Home</a></li>
-              <li><a href="text.html">Text page</a></li>
+              <li class="active"><a href="index.php">Home</a></li>
+              <li><a href="repair.php">Reparatie</a></li>
+              <!-- <li><a href="text.html">Text page</a></li>
               <li class="dropdown"><a href="#" data-toggle="dropdown" class="dropdown-toggle">Dropdown <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="#">Dropdown item 1</a></li>
@@ -49,9 +72,16 @@
                   <li><a href="#">Dropdown item 3</a></li>
                   <li><a href="#">Dropdown item 4</a></li>
                 </ul>
-              </li>
-              <li><a href="contact.html">Contact</a></li>
-            </ul><a href="#" data-toggle="modal" data-target="#login-modal" class="btn navbar-btn btn-ghost"><i class="fa fa-sign-in"></i>Log in</a>
+              </li> -->
+              <li><a href="contact.php">Contact</a></li>
+            </ul>
+            <?php
+              if (isset($_SESSION["user"]["login"])) {
+              }
+              else {
+                echo '<a href="#" data-toggle="modal" data-target="#login-modal" class="btn navbar-btn btn-ghost"><i class="fa fa-sign-in"></i>Log in</a>';
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -64,22 +94,20 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
-            <h4 id="Login" class="modal-title">Customer login</h4>
+            <h4 id="Login" class="modal-title">Login</h4>
           </div>
           <div class="modal-body">
-            <form action="customer-orders.html" method="post">
+            <form action="" method="post">
               <div class="form-group">
-                <input id="email_modal" type="text" placeholder="email" class="form-control">
+                <input id="email_modal" type="text" name="login_email" placeholder="email" class="form-control">
               </div>
               <div class="form-group">
-                <input id="password_modal" type="password" placeholder="password" class="form-control">
+                <input id="password_modal" type="password" name="login_password" placeholder="password" class="form-control">
               </div>
               <p class="text-center">
-                <button type="button" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
+                <button type="submit" name="login" value="true" class="btn btn-primary"><i class="fa fa-sign-in"></i>Login</button>
               </p>
             </form>
-            <p class="text-center text-muted">Not registered yet?</p>
-            <p class="text-center text-muted"><a href="#"><strong>Register now</strong></a>! It is easy and done in 1 minute and gives you access to special discounts and much more!</p>
           </div>
         </div>
       </div>
@@ -91,7 +119,7 @@
         <div class="content">
           <h1>Wegooien? Mooit niet!</h1>
           <p class="margin-bottom">Laat het nu repareren, en maak een afspraak!</p>
-          <p><a class="btn btn-white">Maak een reparatie aan!</a></p>
+          <p><a href="repair.php" class="btn btn-white">Maak een reparatie aan!</a></p>
         </div>
       </div>
     </div>
@@ -149,7 +177,7 @@
               <div class="col-sm-6">
                 <div class="box box-services">
                   <h4 class="heading">Facebook</h4>
-                  <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FRepair-Cafe-Harderwijk-811570042333030&tabs=timeline&width=500&height=70&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="500" height="130" style="border:none;overflow:hidden" scrolling="no" frameborder="0" data-tabs="timeline,events,messages" allowTransparency="true"></iframe>
+                  <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FRepair-Cafe-Harderwijk-811570042333030%2F&tabs=timeline&width=500&height=130&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="500" height="130" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
                 </div>
               </div>
             </div>
@@ -215,7 +243,6 @@
               <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="category.html">Reparatie</a></li>
-                <li><a href="category.html">Support</a></li>
                 <li><a href="contact.html">contact</a></li>
               </ul>
             </div>
@@ -255,5 +282,5 @@
     <script src="js/front.js"></script>
 
   </body>
-  
+
 </html>
